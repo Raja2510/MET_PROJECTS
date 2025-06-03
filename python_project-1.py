@@ -1,7 +1,8 @@
 members={"m1":{"name":"raja",
                "role":"coding",
                "skill_set":"python",
-               "hourly_rate":"6%"}} 
+               "hourly_rate":"6%",
+               "assigned_tasks":[]}} 
 
 
 project={
@@ -18,7 +19,8 @@ project={
 task={"t1":{"title":"task-1",
                       "description":"complete task",
                       "estimates_hours":"10 hours",
-                      "project_id":"p1"}
+                      "project_id":"p1",
+                      "dependencies":[]}
 }
 
 
@@ -46,6 +48,32 @@ def create_task(task_id, project_id, title, description, estimated_hours) :
     if task_id in task:
         return "this task already exist" 
     task.update({task_id:{"title":title,"description":description,"estimated_hours":estimated_hours,"project_id":project_id}})
+
+
+
+
+def assign_task(task_id,members_id,priority_level):
+    assign = {'task_id':task_id,'members_id':members_id,'priority_level':priority_level}
+    members[members_id]["assigned_tasks"].append(assign)
+    return 'task assigned'
+ 
+def set_task_dependency(task_id,depends_on_task_id):
+    if task_id not in task:
+        return 'task not there'
+    if depends_on_task_id not in task:
+        return "task dependency on assigned"
+    if task_id == depends_on_task_id:
+        return 'a task cannot depend on itself'
+    if depends_on_task_id not in task[task_id]['dependencies']:
+        task[task_id]['dependencies'].append(depends_on_task_id)
+        return task[task_id]
+ 
+
+
+
+
+
+
 
 
 
