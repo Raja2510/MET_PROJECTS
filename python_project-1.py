@@ -2,7 +2,8 @@ members={"m1":{"name":"raja",
                "role":"coding",
                "skill_set":"python",
                "hourly_rate":"6%",
-               "assigned_tasks":[]}} 
+               "assigned_tasks":[],
+               "log":[]}} 
 
 
 project={
@@ -33,6 +34,11 @@ def create_project(project_id, name, start_date, end_date, priority):
     print("project added sucessfully")
 
 
+def update_project(project_id, name, start_date, end_date, priority):
+    project.update({project_id:{"name":name,"start_date":start_date,"end_date":end_date,"priority":priority,"task":{}}})
+    print("project updated sucessfully")
+
+
 ##----adding members---------------------
 
 def add_team_member(member_id, name, role, skill_set, hourly_rate) :
@@ -56,7 +62,6 @@ def assign_task(task_id,members_id,priority_level):
     assign = {'task_id':task_id,'members_id':members_id,'priority_level':priority_level}
     members[members_id]["assigned_tasks"].append(assign)
     return 'task assigned'
- 
 def set_task_dependency(task_id,depends_on_task_id):
     if task_id not in task:
         return 'task not there'
@@ -81,39 +86,89 @@ def set_task_dependency(task_id,depends_on_task_id):
 while True:
     print("""
     -------Task Manager -MENU----------------------------:
-    Show projects.------------1
-    Create a new project.-----2
-    Add new member.-----------3
-    Create a new task.--------4
-    Exit----------------------5
+    Manage projects.------------1
+    Manage member.--------------2
+    Manage new task.------------3
+    Exit------------------------4
     """)
     option=int(input("Enter number corresponding to the action you want to perfrom : "))
 
-    if option==5:
+    if option==4:
         print("Closing Task Manager")
         break
     elif option==1:
-        pid=input("Enter project name : ")
-        na=input("Enter name : ")
-        sd=input("Enter start Date : ")
-        ed=input("Enter end Date : ")
-        prio=input("Enter priority : ")
-        create_project(pid,na,sd,ed,prio)
-        print(project)
-    elif option==2:
-        m_id=input("Enter Member ID : ")
-        m_name=input("Enter member name : ")
-        m_rl=input("Enter role : ")
-        m_ss=input("Enter Skill set : ")
-        m_hr=input("Enter hourly rate : ")
-        add_team_member(m_id,m_name,m_rl,m_ss,m_hr)
-        print(members)
-    elif option==3:
-        t_id=input("Enter Task name : ")
-        t_pid=input("Enter Project_id")
-        t_tit=input("Enter Title")
-        t_des=input("Enter description")
-        t_eh=input("Estimated hours")
-        create_task(t_id,t_pid,t_tit,t_des,t_eh)
-        print(task)
-       
+        while True:
+            print("""
+    Add project---------------1
+    Update a project----------2
+    Delete task---------------3
+    back----------------------4
+""")
+            op=int(input("Enter number corresponding to the action you want to perfrom : "))
+            if op==4:
+                break 
+            elif op==1:        
+                pid=input("Enter project name : ")
+                na=input("Enter name : ")
+                sd=input("Enter start Date : ")
+                ed=input("Enter end Date : ")
+                prio=input("Enter priority : ")
+                create_project(pid,na,sd,ed,prio)
+                print(project)
+            elif op==2:
+                Update_pro=input("enter project_id you want to update")
+                if Update_pro not in project:
+                    print("no project found to update")
+                else:
+                    pid=input("Enter new(updated) project name : ")
+                    na=input("Enter new(updated) name : ")
+                    sd=input("Enter new(updated) start Date : ")
+                    ed=input("Enter new(updated) end Date : ")
+                    prio=input("Enter new(updated) priority : ")
+                    update_project(pid,na,sd,ed,prio)
+                    print(project)
+            elif op==3:
+                delete_pro=input("enter project_id you want to delete")
+                if delete_pro in project:
+                   print(f"project { project.pop(delete_pro)} is deleted")
+                else:
+                    print("there exsist no such proect")
+
+                                
+
+
+                
+            
+            
+
+
+
+
+
+    #     print(project)
+    # elif option==2:
+    #     pid=input("Enter project name : ")
+    #     na=input("Enter name : ")
+    #     sd=input("Enter start Date : ")
+    #     ed=input("Enter end Date : ")
+    #     prio=input("Enter priority : ")
+    #     create_project(pid,na,sd,ed,prio)
+    #     print(project)
+    # elif option==3:
+    #     m_id=input("Enter Member ID : ")
+    #     m_name=input("Enter member name : ")
+    #     m_rl=input("Enter role : ")
+    #     m_ss=input("Enter Skill set : ")
+    #     m_hr=input("Enter hourly rate : ")
+    #     add_team_member(m_id,m_name,m_rl,m_ss,m_hr)
+    #     print(members)
+    # elif option==4:
+    #     t_id=input("Enter Task name : ")
+    #     t_pid=input("Enter Project_id")
+    #     t_tit=input("Enter Title")
+    #     t_des=input("Enter description")
+    #     t_eh=input("Estimated hours")
+    #     create_task(t_id,t_pid,t_tit,t_des,t_eh)
+    #     print(task)
+    # else:
+    #     print("mis input")
