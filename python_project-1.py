@@ -39,17 +39,19 @@ def update_project(project_id, name, start_date, end_date, priority):
     print("project updated sucessfully")
 
 
-##----adding members---------------------
+##----adding members---------------------------------
 
 def add_team_member(member_id, name, role, skill_set, hourly_rate) :
     if member_id in members:
         return "this member already exsist"
     members.update({member_id:{"name":name,"role":role,"skill_set":skill_set,"hourly_rate":hourly_rate}})
+def update_member(member_id, name, role, skill_set, hourly_rate) :
+    members.update({member_id:{"name":name,"role":role,"skill_set":skill_set,"hourly_rate":hourly_rate}})
+    print("member updated sucessfully")
 
 
 
-
-
+##-------------tasks--------------------
 def create_task(task_id, project_id, title, description, estimated_hours) :
     if task_id in task:
         return "this task already exist" 
@@ -96,16 +98,18 @@ while True:
     if option==4:
         print("Closing Task Manager")
         break
+    #project
     elif option==1:
         while True:
             print("""
     Add project---------------1
     Update a project----------2
-    Delete task---------------3
-    back----------------------4
+    Delete project------------3
+    show project--------------4
+    back----------------------5
 """)
             op=int(input("Enter number corresponding to the action you want to perfrom : "))
-            if op==4:
+            if op==5:
                 break 
             elif op==1:        
                 pid=input("Enter project name : ")
@@ -133,42 +137,96 @@ while True:
                    print(f"project { project.pop(delete_pro)} is deleted")
                 else:
                     print("there exsist no such proect")
+    #members
+    elif option==2:
+        while True:
+            print("""
+    Add a member---------------1
+    Update a member------------2
+    Delete a member------------3
+    Show members---------------4
+    Back-----------------------5
+""")
+            op=int(input("Enter number corresponding to the action you want to perform: "))
+            if op==5:
+                break 
+            elif op==1:        
+                m_id=input("Enter Member ID : ")
+                m_name=input("Enter member name : ")
+                m_rl=input("Enter role : ")
+                m_ss=input("Enter Skill set : ")
+                m_hr=input("Enter hourly rate : ")
+                add_team_member(m_id,m_name,m_rl,m_ss,m_hr)
+                print(members)
+            elif op==2:
+                m_id=input("Enter Member ID you want to update: ")
+                if m_id not in members:
+                    print("No member found to update")
+                else:
+                    m_name=input("Enter updated member name : ")
+                    m_rl=input("Enter updated role : ")
+                    m_ss=input("Enter updated Skill set : ")
+                    m_hr=input("Enter updated hourly rate : ")
+                    update_member(m_id,m_name,m_rl,m_ss,m_hr)
+                    print(members)
+            elif op==3:
+                m_id=input("Enter Member ID you want to delete: ")
+                if m_id in members:
+                    print(f"Member {members.pop(m_id)} is deleted")
+                else:
+                    print("No such member exists")
+            elif op==4:
+                print("Current Members:")
+                for i in members:
+                    print(i)
+##taska
+    elif option==3:
+        while True:
+            print("""
+    Add task-------------------1
+    Update task----------------2
+    Delete task----------------3
+    Show tasks-----------------4
+    Back-----------------------5
+""")
+            op=int(input("Enter number corresponding to the action you want to perform: "))
+            if op==5:
+                break
+            elif op==1:
+                t_id = input("Enter Task ID: ")
+                p_id = input("Enter Project ID: ")
+                title = input("Enter Task Title: ")
+                desc = input("Enter Description: ")
+                est_hours = input("Enter Estimated Hours: ")
+                print(create_task(t_id, p_id, title, desc, est_hours))
+                print(task)
+            elif op==2:
+                t_id = input("Enter Task ID to update: ")
+                if t_id not in task:
+                    print("No such task found")
+                else:
+                    p_id = input("Enter new Project ID: ")
+                    title = input("Enter new Title: ")
+                    desc = input("Enter new Description: ")
+                    est_hours = input("Enter new Estimated Hours: ")
+                    task[t_id].update({
+                        "title": title,
+                        "description": desc,
+                        "estimated_hours": est_hours,
+                        "project_id": p_id
+                    })
+                    print("Task updated successfully")
+                    print(task)
+            elif op==3:
+                t_id = input("Enter Task ID to delete: ")
+                if t_id in task:
+                    print(f"Task {task.pop(t_id)} is deleted")
+                else:
+                    print("No such task exists")
+            elif op==4:
+                print("All Tasks:")
+                for i in task:
+                    print(i)
 
-                                
 
 
-                
-            
-            
-
-
-
-
-
-    #     print(project)
-    # elif option==2:
-    #     pid=input("Enter project name : ")
-    #     na=input("Enter name : ")
-    #     sd=input("Enter start Date : ")
-    #     ed=input("Enter end Date : ")
-    #     prio=input("Enter priority : ")
-    #     create_project(pid,na,sd,ed,prio)
-    #     print(project)
-    # elif option==3:
-    #     m_id=input("Enter Member ID : ")
-    #     m_name=input("Enter member name : ")
-    #     m_rl=input("Enter role : ")
-    #     m_ss=input("Enter Skill set : ")
-    #     m_hr=input("Enter hourly rate : ")
-    #     add_team_member(m_id,m_name,m_rl,m_ss,m_hr)
-    #     print(members)
-    # elif option==4:
-    #     t_id=input("Enter Task name : ")
-    #     t_pid=input("Enter Project_id")
-    #     t_tit=input("Enter Title")
-    #     t_des=input("Enter description")
-    #     t_eh=input("Estimated hours")
-    #     create_task(t_id,t_pid,t_tit,t_des,t_eh)
-    #     print(task)
-    # else:
-    #     print("mis input")
