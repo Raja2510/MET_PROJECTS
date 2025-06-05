@@ -19,7 +19,8 @@ project={
 
 task={"t1":{"title":"task-1",
                       "description":"complete task",
-                      "estimates_hours":"10 hours",
+                      "estimates_hours":10 ,
+                      "remaining_hours":10 ,
                       "project_id":"p1",
                       "dependencies":[]}
 }
@@ -55,15 +56,14 @@ def update_member(member_id, name, role, skill_set, hourly_rate) :
 def create_task(task_id, project_id, title, description, estimated_hours) :
     if task_id in task:
         return "this task already exist" 
-    task.update({task_id:{"title":title,"description":description,"estimated_hours":estimated_hours,"project_id":project_id}})
-
-
-
+    task.update({task_id:{"title":title,"description":description,"estimated_hours":estimated_hours,"remaining_hours":estimated_hours,"project_id":project_id}})
 
 def assign_task(task_id,members_id,priority_level):
-    assign = {'task_id':task_id,'members_id':members_id,'priority_level':priority_level}
+    assign = {'task_id':task_id,'priority_level':priority_level}
     members[members_id]["assigned_tasks"].append(assign)
     return 'task assigned'
+
+
 def set_task_dependency(task_id,depends_on_task_id):
     if task_id not in task:
         return 'task not there'
@@ -75,11 +75,26 @@ def set_task_dependency(task_id,depends_on_task_id):
         task[task_id]['dependencies'].append(depends_on_task_id)
         return task[task_id]
  
+def log_time(member_id, task_id, hours_worked, date=0):
+    if member_id not in members:
+        return "'MEMBER ID' is not registered."
+    if task_id not in task:
+        return "'TASK ID' is not registered. "
+ 
+    task[task_id]["remaining_hours"]-=hours_worked
+    print(1)  
+ 
 
-
-
-
-
+ 
+ 
+ 
+def update_task_progress(task_id):
+    estimated_time  = task[task_id]["estimated_hours"]
+    remaining_time= task[task_id]["remaining_hours"]
+    if task_id in  task:
+        completed_time = (remaining_time/estimated_time)*100
+        completion_percentage = 100-completed_time
+        print(completion_percentage)
 
 
 
@@ -112,7 +127,7 @@ while True:
             if op==5:
                 break 
             elif op==1:        
-                pid=input("Enter project name : ")
+                pid=input("Enter project name : ") 
                 na=input("Enter name : ")
                 sd=input("Enter start Date : ")
                 ed=input("Enter end Date : ")
@@ -145,10 +160,11 @@ while True:
     Update a member------------2
     Delete a member------------3
     Show members---------------4
-    Back-----------------------5
+    assign_task----------------5
+    Back-----------------------6
 """)
             op=int(input("Enter number corresponding to the action you want to perform: "))
-            if op==5:
+            if op==6:
                 break 
             elif op==1:        
                 m_id=input("Enter Member ID : ")
@@ -178,8 +194,14 @@ while True:
             elif op==4:
                 print("Current Members:")
                 for i in members:
-                    print(i)
-##taska
+                    print(i, members[i])
+                    
+            elif op==5:
+                tid=input("enter the task id")
+                mid=input("enter the member id to assign")
+                pl=input("enter priority level")
+                assign_task(tid,mid,pl)
+
     elif option==3:
         while True:
             print("""
