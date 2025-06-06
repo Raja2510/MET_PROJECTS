@@ -89,8 +89,8 @@ def log_time(member_id, task_id, hours_worked, date=0):
  
  
 def update_task_progress(task_id):
-    estimated_time  = task[task_id]["estimated_hours"]
-    remaining_time= task[task_id]["remaining_hours"]
+    estimated_time  = int(task[task_id]["estimated_hours"])
+    remaining_time= int(task[task_id]["remaining_hours"])
     if task_id in  task:
         completed_time = (remaining_time/estimated_time)*100
         completion_percentage = 100-completed_time
