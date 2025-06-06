@@ -19,7 +19,7 @@ project={
 
 task={"t1":{"title":"task-1",
                       "description":"complete task",
-                      "estimates_hours":10 ,
+                      "estimated_hours":10 ,
                       "remaining_hours":10 ,
                       "project_id":"p1",
                       "dependencies":[]}
@@ -82,7 +82,7 @@ def log_time(member_id, task_id, hours_worked, date=0):
         return "'TASK ID' is not registered. "
  
     task[task_id]["remaining_hours"]-=hours_worked
-    print(1)  
+    return task[task_id]["remaining_hours"]   
  
 
  
@@ -94,7 +94,7 @@ def update_task_progress(task_id):
     if task_id in  task:
         completed_time = (remaining_time/estimated_time)*100
         completion_percentage = 100-completed_time
-        print(completion_percentage)
+        return completion_percentage
 
 
 
@@ -109,7 +109,6 @@ while True:
     Exit------------------------4
     """)
     option=int(input("Enter number corresponding to the action you want to perfrom : "))
-    
     if option==4:
         print("Closing Task Manager")
         break
@@ -139,12 +138,12 @@ while True:
                 if Update_pro not in project:
                     print("no project found to update")
                 else:
-                    pid=input("Enter new(updated) project name : ")
+                    
                     na=input("Enter new(updated) name : ")
                     sd=input("Enter new(updated) start Date : ")
                     ed=input("Enter new(updated) end Date : ")
                     prio=input("Enter new(updated) priority : ")
-                    update_project(pid,na,sd,ed,prio)
+                    update_project(Update_pro,na,sd,ed,prio)
                     print(project)
             elif op==3:
                 delete_pro=input("enter project_id you want to delete")
@@ -152,6 +151,10 @@ while True:
                    print(f"project { project.pop(delete_pro)} is deleted")
                 else:
                     print("there exsist no such proect")
+            elif op==4:
+                print("Current projects: ")
+                for i in project:
+                    print(i, project[i])
     #members
     elif option==2:
         while True:
@@ -161,10 +164,11 @@ while True:
     Delete a member------------3
     Show members---------------4
     assign_task----------------5
-    Back-----------------------6
+    Log time-------------------6
+    Back-----------------------7
 """)
-            op=int(input("Enter number corresponding to the action you want to perform: "))
-            if op==6:
+            op=int(input("Enter number corresponding to the action you want to perform : "))
+            if op==7:
                 break 
             elif op==1:        
                 m_id=input("Enter Member ID : ")
@@ -175,7 +179,7 @@ while True:
                 add_team_member(m_id,m_name,m_rl,m_ss,m_hr)
                 print(members)
             elif op==2:
-                m_id=input("Enter Member ID you want to update: ")
+                m_id=input("Enter Member ID you want to update : ")
                 if m_id not in members:
                     print("No member found to update")
                 else:
@@ -192,15 +196,21 @@ while True:
                 else:
                     print("No such member exists")
             elif op==4:
-                print("Current Members:")
+                print("Current Members: ")
                 for i in members:
                     print(i, members[i])
                     
             elif op==5:
-                tid=input("enter the task id")
-                mid=input("enter the member id to assign")
-                pl=input("enter priority level")
+                tid=input("enter the task id: ")
+                mid=input("enter the member id to assign: ")
+                pl=input("enter priority level: ")
                 assign_task(tid,mid,pl)
+            elif op==6:
+                mid = input("Enter Member ID: ")
+                tid = input("Enter Task ID: ")
+                hours = int(input("Enter Hours Worked: "))
+                remaining = log_time(mid, tid, hours)
+                print(f"Remaining hours for task '{tid}': {remaining}")
 
     elif option==3:
         while True:
@@ -209,10 +219,12 @@ while True:
     Update task----------------2
     Delete task----------------3
     Show tasks-----------------4
-    Back-----------------------5
+    Set Task Dependency--------5
+    Task Progress--------------6
+    Back-----------------------7
 """)
             op=int(input("Enter number corresponding to the action you want to perform: "))
-            if op==5:
+            if op==7:
                 break
             elif op==1:
                 t_id = input("Enter Task ID: ")
@@ -249,6 +261,16 @@ while True:
                 print("All Tasks:")
                 for i in task:
                     print(i)
-
+            elif op==5:
+                t_id = input("Enter Task ID to set dependency for: ")
+                dep_id = input("Enter the Task ID it depends on: ")
+                result = set_task_dependency(t_id, dep_id)
+                print(result)
+            elif op==6:
+                t_id = input("Enter Task ID to update progress: ")
+                if t_id in task:
+                    print(f"{update_task_progress(t_id)} % is complete")
+                else:
+                    print("Task not found.")
 
 
